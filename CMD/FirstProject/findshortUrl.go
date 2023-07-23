@@ -11,3 +11,9 @@ func findshortUrl(shortID string) (string, error) {
 	}
 	return longUrl, nil
 }
+
+func statusShortUrl(shortId string) (string, error) {
+	var infoUrl string
+
+	return infoUrl, nil
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -46,8 +47,26 @@ func setupRouter() *gin.Engine {
 			c.String(http.StatusNotFound, "URL not found", err)
 			return
 		} else {
+			//Вызов функции, которая считывает данные пользователя
+			err := getUserData(c, shortID)
+			if err != nil {
+				fmt.Println(err)
+			}
+			//Редирект пользователя по длинной ссылке
 			c.Redirect(http.StatusMovedPermanently, longURL)
 		}
+	})
+
+	r.POST("/statusurl", func(c *gin.Context) {
+		body, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, errors.New("Cannot read body"))
+		}
+		statusUrl, err := statusShortUrl(string(body))
+		if err != nil {
+			c.AbortWithError(http.StatusNotFound, errors.New("Not found short url"))
+		}
+		c.String(http.StatusOK, statusUrl)
 	})
 
 	return r

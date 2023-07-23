@@ -59,3 +59,23 @@ func findLongURL(db *sql.DB, shortURL string) (string, error) {
 
 	return longURL, nil
 }
+
+func insertUserData(db *sql.DB, shortUrl string, userData *UserData) error {
+	// Запрос для получения ID короткой ссылки из таблицы urls_users
+	shortIDQuery := "SELECT id FROM urls_users WHERE shorturl = $1"
+	var shortID int
+	shortUrl = "http://localhost:8080/" + shortUrl
+	err := db.QueryRow(shortIDQuery, shortUrl).Scan(&shortID)
+	if err != nil {
+		return err
+	}
+
+	// Запрос для вставки данных пользователя в таблицу urls_info
+	query := "INSERT INTO urls_info (url_id, user_agent, device, os, ip_address) VALUES ($1, $2, $3, $4, $5)"
+	_, err = db.Exec(query, shortID, userData.UserAgent, userData.Device, userData.OS, userData.IP)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
