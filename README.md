@@ -3,4 +3,4 @@
 # А так же просмотреть статистику использования короткого URL
 
 # Back-end  - github.com/Mark-Grigorev
-# Front-end - github.com/Pechenkasd
+# Front-end(html + css) - github.com/Pechenkasd
