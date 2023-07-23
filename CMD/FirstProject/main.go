@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 
+	statususedurl "example.com/gin-project/CMD/FirstProject/infourl_repository"
+	shorturl "example.com/gin-project/CMD/FirstProject/shorturl_repository"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,7 +34,7 @@ func setupRouter() *gin.Engine {
 			c.AbortWithError(http.StatusBadRequest, errors.New("Cannot read body"))
 		}
 
-		shortURL, err := generateShortURL(string(body)) // Генерируем короткий URL из длинного URL
+		shortURL, err := shorturl.GenerateshortURL(string(body)) // Генерируем короткий URL из длинного URL
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 			return
@@ -42,13 +44,13 @@ func setupRouter() *gin.Engine {
 
 	r.GET("/:shortID", func(c *gin.Context) {
 		shortID := c.Param("shortID")
-		longURL, err := findshortUrl(shortID)
+		longURL, err := shorturl.FindshortUrl(shortID)
 		if err != nil {
 			c.String(http.StatusNotFound, "URL not found", err)
 			return
 		} else {
 			//Вызов функции, которая считывает данные пользователя
-			err := getUserData(c, shortID)
+			err := statususedurl.GetUserData(c, shortID)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -62,7 +64,7 @@ func setupRouter() *gin.Engine {
 		if err != nil {
 			c.AbortWithError(http.StatusBadRequest, errors.New("Cannot read body"))
 		}
-		statusUrl, err := statusShortUrl(string(body))
+		statusUrl, err := shorturl.StatusShortUrl(string(body))
 		if err != nil {
 			c.AbortWithError(http.StatusNotFound, errors.New("Not found short url"))
 		}

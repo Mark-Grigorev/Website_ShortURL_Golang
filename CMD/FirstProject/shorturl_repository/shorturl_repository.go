@@ -1,17 +1,30 @@
-package main
+package shorturl_repository
 
 import (
 	"database/sql"
-	"strings"
 
+	"example.com/gin-project/CMD/FirstProject/db_repository"
+	"example.com/gin-project/CMD/FirstProject/helpers"
 	"github.com/teris-io/shortid"
 )
 
-func generateShortURL(longURL string) (string, error) {
+func FindshortUrl(shortID string) (string, error) {
+
+	db, err := db_repository.ConnectToPostgreSQL()
+	defer db.Close()
+	shortURL := "http://localhost:8080/" + shortID
+	longUrl, err := db_repository.FindLongURL(db, shortURL)
+	if err != nil {
+		return "", err
+	}
+	return longUrl, nil
+}
+
+func GenerateshortURL(longURL string) (string, error) {
 	localhost := "http://localhost:8080/"
 
 	// Проверяем, есть ли уже такая запись в базе данных
-	db, err := connectToPostgreSQL()
+	db, err := db_repository.ConnectToPostgreSQL()
 	if err != nil {
 		return "", err
 	}
@@ -20,7 +33,7 @@ func generateShortURL(longURL string) (string, error) {
 	// Запрос для проверки наличия записи с таким longURL
 	query := "SELECT shorturl FROM urls_users WHERE longurl = $1"
 	var existingShortURL string
-	longURL = normalizeLongURL(longURL)
+	longURL = helpers.NormalizeLongURL(longURL)
 	err = db.QueryRow(query, longURL).Scan(&existingShortURL)
 	if err == nil {
 		// Запись уже существует, возвращаем существующий shortURL
@@ -39,7 +52,7 @@ func generateShortURL(longURL string) (string, error) {
 	shortURL := localhost + id
 
 	// Вызываем функцию для создания новой записи с заданными значениями полей longURL и shortURL
-	err = insertRecord(db, longURL, shortURL)
+	err = db_repository.InsertRecord(db, longURL, shortURL)
 	if err != nil {
 		return "", err
 	}
@@ -47,10 +60,8 @@ func generateShortURL(longURL string) (string, error) {
 	return shortURL, nil
 }
 
-// Функция для проверки и обновления префикса "https://" в длинной ссылке
-func normalizeLongURL(longURL string) string {
-	if !strings.HasPrefix(longURL, "http://") && !strings.HasPrefix(longURL, "https://") {
-		longURL = "https://" + longURL
-	}
-	return longURL
+func StatusShortUrl(shortId string) (string, error) {
+	var infoUrl string
+
+	return infoUrl, nil
 }

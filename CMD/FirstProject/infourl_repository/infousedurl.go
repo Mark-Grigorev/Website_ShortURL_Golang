@@ -1,18 +1,12 @@
-package main
+package infourl_repository
 
 import (
+	"example.com/gin-project/CMD/FirstProject/db_repository"
 	"github.com/gin-gonic/gin"
 	"github.com/mssola/user_agent"
 )
 
-type UserData struct {
-	UserAgent string
-	Device    string
-	OS        string
-	IP        string
-}
-
-func getUserData(c *gin.Context, shortUrl string) error {
+func GetUserData(c *gin.Context, shortUrl string) error {
 	// Извлекаем информацию из объекта http.Request
 	userAgent := c.Request.UserAgent()
 	device := "Device"
@@ -25,19 +19,12 @@ func getUserData(c *gin.Context, shortUrl string) error {
 
 	ipAddress := c.ClientIP()
 
-	userData := &UserData{
-		UserAgent: userAgent,
-		Device:    device,
-		OS:        os,
-		IP:        ipAddress,
-	}
-
-	db, err := connectToPostgreSQL()
+	db, err := db_repository.ConnectToPostgreSQL()
 	if err != nil {
 		return err
 	}
 
-	err = insertUserData(db, shortUrl, userData)
+	err = db_repository.InsertUserData(db, shortUrl, userAgent, device, os, ipAddress)
 	if err != nil {
 		return err
 	}
