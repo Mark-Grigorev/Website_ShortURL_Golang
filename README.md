@@ -1,2 +1,6 @@
 # Website_ShortURL_Golang
-# ТЗ - Реализовать сервис, который уменьшает URL, который ввел пользователь
+# Данный сервис позволяет уменьшить URL
+# И так же просмотреть статистику использования короткого URL
+
+# Back-end  - github.com/Mark-Grigorev
+# Front-end - github.com/Pechenkasd
