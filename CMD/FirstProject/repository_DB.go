@@ -1,9 +1,8 @@
-package db_repository
+package main
 
 import (
 	"database/sql"
 
-	helpers "example.com/gin-project/CMD/FirstProject/Helpers"
 	_ "github.com/lib/pq"
 )
 
@@ -38,7 +37,7 @@ func ConnectToPostgreSQL() (*sql.DB, error) {
 
 func InsertRecord(db *sql.DB, longURL, shortURL string) error {
 	// Проверяем и обновляем префикс в длинной ссылке
-	longURL = helpers.NormalizeLongURL(longURL)
+	longURL = NormalizeLongURL(longURL)
 
 	// Запрос для вставки новой записи в таблицу
 	query := "INSERT INTO urls_users (longurl, shorturl) VALUES ($1, $2) RETURNING id"
@@ -92,4 +91,42 @@ func InsertUserData(db *sql.DB, shortUrl string, UserAgent string, Device string
 	}
 
 	return nil
+}
+
+type URLInfo struct {
+	ID        int
+	URLID     int
+	UserAgent string
+	Device    string
+	OS        string
+	IPAddress string
+}
+
+func FindInfoShortURL(db *sql.DB, shortURL string) ([]URLInfo, error) {
+	shortIDQuery := "SELECT id FROM urls_users WHERE shorturl = $1"
+	var shortID int
+	shortURL = "http://localhost:8080/" + shortURL
+	err := db.QueryRow(shortIDQuery, shortURL).Scan(&shortID)
+	if err != nil {
+		return nil, err
+	}
+
+	shortURLStatus := "SELECT * FROM urls_info WHERE url_id = $1"
+	rows, err := db.Query(shortURLStatus, shortID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var urlInfos []URLInfo
+	for rows.Next() {
+		var urlInfo URLInfo
+		err := rows.Scan(&urlInfo.ID, &urlInfo.URLID, &urlInfo.UserAgent, &urlInfo.Device, &urlInfo.OS, &urlInfo.IPAddress)
+		if err != nil {
+			return nil, err
+		}
+		urlInfos = append(urlInfos, urlInfo)
+	}
+
+	return urlInfos, nil
 }

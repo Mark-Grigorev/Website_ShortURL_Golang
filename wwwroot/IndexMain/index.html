@@ -15,9 +15,19 @@
             <input type="text" id="url" placeholder="Enter a URL" required>
             <output type="text" id="shortUrl" placeholder="Here is your tiny url"></output>
             <button onclick="shortenURL()">Shorten</button>
+            <br>
+            <h1>Check information of used short url</h1>
+            <button onclick="openNxtPage()">Get info used url</button>
         </div>
     </div>
 
+
+    <script>
+        function openNxtPage() {
+            
+            window.location.href = "../UrlInfo/index.html";
+        }
+    </script>
     <script src="postforserver.js"></script>
 </body>
 

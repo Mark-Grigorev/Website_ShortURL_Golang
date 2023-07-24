@@ -9,26 +9,48 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-   
+<body class="light">
+    
     <div class="form-container">
         <h1>Link Usage Statistics</h1>
-        <form action="/submit" method="POST">
-            <label class="form-label" for="link">Generated Link:</label>
-            <input class="form-input" type="text" id="link" name="link" readonly>
-            <br>
-            <label class="form-label" for="device">Device:</label>
-            <input class="form-input" type="text" id="device" name="device">
-            <br>
-            <label class="form-label" for="os">Operating System:</label>
-            <input class="form-input" type="text" id="os" name="os">
-            <br>
-            <label class="form-label" for="ip">IP Address:</label>
-            <input class="form-input" type="text" id="ip" name="ip">
-            <br>
-            <input class="form-submit" type="submit" value="Submit">
+        <form>
+            <div class="form-group">
+                <label for="link">Generated Link:</label>
+                <input type="text" id="shortUrl" name="link" >
+                <button type="button" class="form-submit" onclick="GetInfoShrtURL()">Submit</button>
+                <br>
+                <button type="button" class="form-submit" onclick="goBack()">Go Back</button>
+                <br>
+            </div>
+            <div class="form-group-container">
+                <div class="form-group-agent">
+                    <label for="device" class="form-label">USER AGENT</label>
+                    <output type="text" class="form-output" id="infoUserAgent" readonly></output>
+                </div>
+                <div class="form-group">
+                    <label for="device" class="form-label">Device:</label>
+                    <output type="text" class="form-output" id="infoDevice" readonly></output>
+                </div>
+                <div class="form-group">
+                    <label for="os" class="form-label">Operating System:</label>
+                    <output type="text" class="form-output" id="infOs" readonly></output>
+                </div>
+                <div class="form-group">
+                    <label for="ip" class="form-label">IP Address:</label>
+                    <output type="text" class="form-output" id="infoIp" readonly></output>
+                </div>
+            </div>
         </form>
     </div>
+    <script>
+        function goBack() {
+         
+            
+            window.location.href = "../IndexMain/index.html";
+        }
+    </script>
+
+        <script src="script.js"></script>
 </body>
 
 </html>

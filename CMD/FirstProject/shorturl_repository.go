@@ -1,19 +1,17 @@
-package shorturl_repository
+package main
 
 import (
 	"database/sql"
 
-	"example.com/gin-project/CMD/FirstProject/db_repository"
-	"example.com/gin-project/CMD/FirstProject/helpers"
 	"github.com/teris-io/shortid"
 )
 
 func FindshortUrl(shortID string) (string, error) {
 
-	db, err := db_repository.ConnectToPostgreSQL()
+	db, err := ConnectToPostgreSQL()
 	defer db.Close()
 	shortURL := "http://localhost:8080/" + shortID
-	longUrl, err := db_repository.FindLongURL(db, shortURL)
+	longUrl, err := FindLongURL(db, shortURL)
 	if err != nil {
 		return "", err
 	}
@@ -24,7 +22,7 @@ func GenerateshortURL(longURL string) (string, error) {
 	localhost := "http://localhost:8080/"
 
 	// Проверяем, есть ли уже такая запись в базе данных
-	db, err := db_repository.ConnectToPostgreSQL()
+	db, err := ConnectToPostgreSQL()
 	if err != nil {
 		return "", err
 	}
@@ -33,7 +31,7 @@ func GenerateshortURL(longURL string) (string, error) {
 	// Запрос для проверки наличия записи с таким longURL
 	query := "SELECT shorturl FROM urls_users WHERE longurl = $1"
 	var existingShortURL string
-	longURL = helpers.NormalizeLongURL(longURL)
+	longURL = NormalizeLongURL(longURL)
 	err = db.QueryRow(query, longURL).Scan(&existingShortURL)
 	if err == nil {
 		// Запись уже существует, возвращаем существующий shortURL
@@ -52,7 +50,7 @@ func GenerateshortURL(longURL string) (string, error) {
 	shortURL := localhost + id
 
 	// Вызываем функцию для создания новой записи с заданными значениями полей longURL и shortURL
-	err = db_repository.InsertRecord(db, longURL, shortURL)
+	err = InsertRecord(db, longURL, shortURL)
 	if err != nil {
 		return "", err
 	}
@@ -60,8 +58,17 @@ func GenerateshortURL(longURL string) (string, error) {
 	return shortURL, nil
 }
 
-func StatusShortUrl(shortId string) (string, error) {
-	var infoUrl string
+func StatusShortUrl(shortID string) ([]URLInfo, error) {
+	db, err := ConnectToPostgreSQL()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
 
-	return infoUrl, nil
+	info, err := FindInfoShortURL(db, shortID)
+	if err != nil {
+		return nil, err
+	}
+
+	return info, nil
 }

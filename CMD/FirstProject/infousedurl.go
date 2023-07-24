@@ -1,7 +1,6 @@
-package infourl_repository
+package main
 
 import (
-	"example.com/gin-project/CMD/FirstProject/db_repository"
 	"github.com/gin-gonic/gin"
 	"github.com/mssola/user_agent"
 )
@@ -19,12 +18,12 @@ func GetUserData(c *gin.Context, shortUrl string) error {
 
 	ipAddress := c.ClientIP()
 
-	db, err := db_repository.ConnectToPostgreSQL()
+	db, err := ConnectToPostgreSQL()
 	if err != nil {
 		return err
 	}
 
-	err = db_repository.InsertUserData(db, shortUrl, userAgent, device, os, ipAddress)
+	err = InsertUserData(db, shortUrl, userAgent, device, os, ipAddress)
 	if err != nil {
 		return err
 	}
