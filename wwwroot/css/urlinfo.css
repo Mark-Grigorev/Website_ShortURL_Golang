@@ -1,0 +1,224 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.box{
+width:1680px;
+height:1050px;
+display: flex;
+box-sizing: border-box;
+}
+.container {
+  height:100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', Courier, monospace,cursive;
+}
+
+.form {
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form input[type="text"],
+.form output[type="text"] {
+  width: 400px;
+  padding-top: 5%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form output[type="text"] {
+  margin-top: 15px;
+}
+
+.form-submit {
+  align-items: center;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #fe6637;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fe6637;
+  background: rgba( 0,0,0,.0);
+  font-size: 25px;
+  transition: .2s ease-in-out;
+}
+
+.form-submit :hover {
+  background: #fe6637;
+  color: aqua;
+}
+
+.form-submit :before{
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+
+.form-submit :hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}
+
+.result {
+  font-size: 16px;
+  font-weight: bold;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.form-label {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+output[type="text"] {
+  width: 200px;
+  padding-top: 5%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+output[type="text"] {
+  margin-top: 15px;
+}
+
+
+
+.form-group-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  height:100vh;
+  gap:10px;
+}
+.form-group-agent output[type="text"] {
+width: 450px;
+padding-top: 5%;
+padding: 10px;
+font-size: 16px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+.form-output {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gradient {
+
+  color: aqua;
+  font-family:'Courier New', Courier, monospace, cursive;
+  text-align: center;
+  height: 100%;
+  width: 100%; 
+  background: linear-gradient(149deg, rgba(24,187,156,1) 0%, rgba(106,57,175,1) 42%, rgba(187,24,148,1) 72%, rgba(115,53,134,1) 100%);
+  animation: gradient 10s infinite linear; 
+  background-size: 400%; 
+}
+
+@keyframes gradient {
+  0% {
+      background-position: 80% 0%;
+  }
+  50% {
+      background-position: 20% 100%;
+  }
+  100% {
+      background-position: 80% 0%;
+  }
+}
+
+
+.glow-on-hover {
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: rgba( 0,0,0,.5);
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, red, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba( 0,0,0,.0);
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}

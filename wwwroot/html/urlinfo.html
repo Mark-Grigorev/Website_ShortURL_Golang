@@ -5,22 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/urlinfo.css">
+    <link rel="stylesheet" href="../css/menu.css">
 </head>
 
-<body class="light">
+<body class="gradient">
     
+    
+    <ul id="navbar">
+        <h3><li><a href="index.html">Home</a></li>
+        <li><a href="">News</a></li>
+        <li><a href="#">Access</a>
+          <ul>
+            <li><a href="login.html">Authorization</a></li>
+            <li><a href="singup.html">Registration</a></li>
+          </ul>
+        </li>
+       
+        <li><a href="#">About Us</a></li>
+      </h3>
+      </ul>
+<br><br>
     <div class="form-container">
         <h1>Link Usage Statistics</h1>
         <form>
             <div class="form-group">
                 <label for="link">Generated Link:</label>
                 <input type="text" id="shortUrl" name="link" >
-                <button type="button" class="form-submit" onclick="GetInfoShrtURL()">Submit</button>
-                <br>
-                <button type="button" class="form-submit" onclick="goBack()">Go Back</button>
-                <br>
+                <br><br>
+                <button class="glow-on-hover" type="button" onclick="GetInfoShrtURL()">SUBMIT!</button>
+                
+                
             </div>
             <div class="form-group-container">
                 <div class="form-group-agent">
@@ -42,15 +57,10 @@
             </div>
         </form>
     </div>
-    <script>
-        function goBack() {
-         
-            
-            window.location.href = "../IndexMain/index.html";
-        }
-    </script>
 
-        <script src="script.js"></script>
+    
+
+        <script src="../scripts/urlinfo.js"></script>
 </body>
 
 </html>

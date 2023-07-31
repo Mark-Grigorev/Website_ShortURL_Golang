@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/lib/pq"
 )
@@ -129,4 +130,34 @@ func FindInfoShortURL(db *sql.DB, shortURL string) ([]URLInfo, error) {
 	}
 
 	return urlInfos, nil
+}
+
+func RegistrationUserDB(db *sql.DB, login string, password string, name string) error {
+	query := "INSERT INTO users (login, password, name) VALUES ($1, $2, $3)"
+	_, err := db.Exec(query, login, password, name)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func AuthorizationUserDB(db *sql.DB, login string, password string) error {
+
+	// Предполагается, что у вас есть таблица "users" с полями "login" и "password"
+	query := "SELECT COUNT(*) FROM users WHERE login = $1 AND password = $2"
+	var count int
+
+	// Выполняем запрос с переданными параметрами логина и пароля
+	err := db.QueryRow(query, login, password).Scan(&count)
+	if err != nil {
+		return err
+	}
+
+	// Если count > 0, значит есть совпадение логина и пароля в базе данных
+	if count > 0 {
+		return nil
+	}
+
+	// Если нет совпадений, возвращаем ошибку
+	return fmt.Errorf("пользователь с таким логином и паролем не найден")
 }

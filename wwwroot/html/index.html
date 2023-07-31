@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menu.css">
+     
+      
+</head>
+
+<body class="gradient">
+    <br>
+    <ul id="navbar">
+        <h3><li><a href="index.html">Home</a></li>
+        <li><a href="">News</a></li>
+        <li><a href="#">Access</a>
+          <ul>
+            <li><a href="login.html">Authorization</a></li>
+            <li><a href="singup.html">Registration</a></li>
+          </ul>
+        </li>
+       
+        <li><a href="#">About Us</a></li>
+      </h3>
+      </ul>
+
+
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <div class="form">
+            <input type="text" id="url" placeholder="Enter a URL" required>
+            <output type="text" id="shortUrl" placeholder="Here is your tiny url"></output>
+            <button onclick="shortenURL()">Shorten</button>
+            <br>
+            
+        </div>
+    </div>
+
+
+   
+    <script src="../scripts/postforserver.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+#navbar ul{
+    display: none;
+    background: rgba( 0,0,0,.2);
+    position: absolute;
+    top: 100%;
+    font: size 16px;
+   
+  }
+  #navbar li:hover ul { display: block; }
+  #navbar, #navbar ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  #navbar {
+    background: rgba( 0,0,0,.0);
+    height: 50px;
+    padding-left: 25px;
+    min-width: 470px;
+    font-size:20px;
+    color:aqua;
+  }
+  #navbar li {
+    float: left;
+    position: relative;
+    height: 100%;
+  }
+  #navbar li a {
+    display: block;
+    padding: 6px;
+    width: 150px;
+    color: aqua;
+    text-decoration: none;
+    text-align: center;
+  }
+  #navbar ul li { float: none; }
+  #navbar li:hover {  background: rgba( 0,0,0,.2); }
+  #navbar ul li:hover {  background: rgba( 0,0,0,.0); }

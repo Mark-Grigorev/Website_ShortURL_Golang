@@ -9,11 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type AuthorizationData struct {
+	Login string `json:"Login"`
+	Name  string `json:"Password"`
+}
+
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
 	// Добавляем middleware для поддержки CORS
-	// Без этого не работало, еще не разобрался что и почему :(
+
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
@@ -40,6 +45,59 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, shortURL)
 	})
 
+	r.POST("/statusurl", func(c *gin.Context) {
+		body, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, errors.New("Cannot read body"))
+			return
+		}
+		shortID := string(body)
+		info, err := StatusShortUrl(shortID)
+		if err != nil {
+			c.AbortWithError(http.StatusNotFound, errors.New("Not found short url"))
+			return
+		}
+		c.JSON(http.StatusOK, info)
+	})
+
+	r.POST("/registration", func(ctx *gin.Context) {
+		var messageRegistr string
+		messageRegistr = "Вы успешно зарегестрировались"
+		body, err := io.ReadAll(ctx.Request.Body)
+		if err != nil {
+			ctx.AbortWithError(http.StatusBadRequest, errors.New("Cannot read body"))
+			return
+		}
+
+		err = registration(string(body))
+		if err != nil {
+			ctx.AbortWithError(http.StatusBadRequest, errors.New("Error registration"))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, messageRegistr)
+	})
+
+	r.POST("/authorization", func(ctx *gin.Context) {
+		var messageAuth string
+		messageAuth = "Вы успешно авторизировались"
+
+		var authData AuthorizationData
+		if err := ctx.ShouldBindJSON(&authData); err != nil {
+			ctx.AbortWithError(http.StatusBadRequest, errors.New("некорректные данные"))
+			return
+		}
+
+		err := authorization(authData.Login, authData.Name)
+		if err != nil {
+			ctx.AbortWithError(http.StatusBadRequest, errors.New("ошибка авторизации"))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, messageAuth)
+
+	})
+
 	r.GET("/:shortID", func(c *gin.Context) {
 		shortID := c.Param("shortID")
 		longURL, err := FindshortUrl(shortID)
@@ -55,20 +113,6 @@ func setupRouter() *gin.Engine {
 			//Редирект пользователя по длинной ссылке
 			c.Redirect(http.StatusMovedPermanently, longURL)
 		}
-	})
-	r.POST("/statusurl", func(c *gin.Context) {
-		body, err := io.ReadAll(c.Request.Body)
-		if err != nil {
-			c.AbortWithError(http.StatusBadRequest, errors.New("Cannot read body"))
-			return
-		}
-		shortID := string(body)
-		info, err := StatusShortUrl(shortID)
-		if err != nil {
-			c.AbortWithError(http.StatusNotFound, errors.New("Not found short url"))
-			return
-		}
-		c.JSON(http.StatusOK, info)
 	})
 
 	return r
