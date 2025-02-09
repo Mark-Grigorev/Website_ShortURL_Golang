@@ -1,6 +1,6 @@
  function shortenURL() {
             const inputUrl = document.getElementById("url").value;
-            const apiUrl = "http://localhost:8080/urlshort"; //Адрес сервера
+            const apiUrl = "http://localhost:8080/v1/urlshort/urlshort"; //Адрес сервера
 
             // Отправляем запрос на сервер
             fetch(apiUrl, {

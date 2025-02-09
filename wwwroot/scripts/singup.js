@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Отправляем данные на сервер для регистрации
-        fetch('http://localhost:8080/registration', {
+        fetch('http://localhost:8080/v1/auth/registration', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
