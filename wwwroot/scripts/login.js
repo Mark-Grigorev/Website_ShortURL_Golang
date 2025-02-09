@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Отправляем данные на сервер для авторизации
-        fetch('http://localhost:8080/authorization', {
+        fetch('http://localhost:8080/v1/auth/authorization', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

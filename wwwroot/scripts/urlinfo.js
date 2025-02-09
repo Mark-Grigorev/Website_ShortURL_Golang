@@ -1,6 +1,6 @@
 function GetInfoShrtURL() {
     const shortUrl = document.getElementById('shortUrl').value;
-    const apiURL = "http://localhost:8080/statusurl"
+    const apiURL = "http://localhost:8080/v1/urlshort/statusurl"
         fetch(apiURL, {
         method: 'POST',
         body: shortUrl,
