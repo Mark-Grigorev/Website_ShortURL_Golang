@@ -48,17 +48,6 @@ func setupRouter() *gin.Engine {
 }
 
 func (a *App) setV1Routes() {
-	a.router.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(http.StatusOK)
-			return
-		}
-		c.Next()
-	})
-
 	v1 := a.router.Group("/v1")
 	a.setURLShorterRoutes(v1.Group("/urlshort"))
 	a.setAuthRoutes(v1.Group("/auth"))
