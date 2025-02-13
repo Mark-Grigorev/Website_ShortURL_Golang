@@ -1,5 +1,10 @@
 package model
 
+type DataOfUser struct {
+	FirstName  string
+	MiddleName string
+	LastName   string
+}
 type UserData struct {
 	Browser        string
 	BrowserVersion string
@@ -26,18 +31,6 @@ type URLInfo struct {
 	OS        string
 	IPAddress string
 }
-
-type AuthorizationData struct {
-	Login    string `json:"login"`
-	Password string `json:"password"`
-}
-
-type Config struct {
-	Host    string
-	DBCon   string
-	SiteURL string
-}
-
 type URLReq struct {
 	ID  string `json:"id"`
 	URL string `json:"url"`

@@ -50,20 +50,16 @@ func (c *DBClient) InsertRecord(ctx context.Context, longURL, shortURL string) e
 }
 
 func (c *DBClient) FindLongURL(ctx context.Context, shortURL string) (string, error) {
-	// Выполняем SQL-запрос с передачей параметра shortURL и получаем результат
 	var longURL string
 	err := c.db.QueryRowContext(ctx, getLongURLByShort, shortURL).Scan(&longURL)
 	if err != nil {
 		return "", err
 	}
-	//Удаляем часть Url, для корректной работы
 
 	return longURL, nil
 }
 
 func (c *DBClient) InsertUserData(ctx context.Context, userData model.UserData) error {
-	// Запрос для получения ID короткой ссылки из таблицы urls_users
-
 	var shortID int
 	shortUrl := c.siteURL + userData.ShortURL
 	err := c.db.QueryRowContext(ctx, getURLIDByShort, shortUrl).Scan(&shortID)
@@ -130,31 +126,4 @@ func (c DBClient) FindDataShortURL(ctx context.Context, longURL string) (string,
 	}
 
 	return "", nil
-}
-
-// TODO - Вынести регистрацию/авторизацию в отдельный сервис
-func (c *DBClient) RegistrationUserDB(ctx context.Context, login string, password string, name string) error {
-	_, err := c.db.ExecContext(ctx, insertUser, login, password, name)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *DBClient) AuthorizationUserDB(ctx context.Context, login string, password string) error {
-	var count int
-
-	// Выполняем запрос с переданными параметрами логина и пароля
-	err := c.db.QueryRow(checkUserCredentials, login, password).Scan(&count)
-	if err != nil {
-		return err
-	}
-
-	// Если count > 0, значит есть совпадение логина и пароля в базе данных
-	if count > 0 {
-		return nil
-	}
-
-	// Если нет совпадений, возвращаем ошибку
-	return errors.New("пользователь с таким логином и паролем не найден")
 }

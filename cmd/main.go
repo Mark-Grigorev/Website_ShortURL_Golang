@@ -11,7 +11,7 @@ import (
 
 func main() {
 	cfg := config.Read()
-	db, err := db.New(cfg.DBCon, cfg.SiteURL)
+	db, err := db.New(cfg.DBConfig.DBConnection, cfg.AppConfig.ThisURL)
 	if err != nil {
 		log.Fatalf("Ошибка при создании объекта бд - %s", err.Error())
 	}

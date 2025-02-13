@@ -24,22 +24,6 @@ func New(cfg *model.Config, db *db.DBClient) *Logic {
 	}
 }
 
-// TODO - Разделить логику, переименовать метод.
-func (l *Logic) Authorization(ctx context.Context, login string, pass string) error {
-	logPrefix := "[Authorization]"
-	var err error
-
-	pass, err = utils.HashPass(pass)
-	if err != nil {
-		return fmt.Errorf("%s hash pass err - %w", logPrefix, err)
-	}
-	err = l.db.AuthorizationUserDB(ctx, login, pass)
-	if err != nil {
-		return fmt.Errorf("%s db err - %w", logPrefix, err)
-	}
-	return nil
-}
-
 func (l *Logic) GetUserData(ctx *gin.Context, shortUrl string) error {
 	logPrefix := "[GetUserData]"
 
@@ -67,7 +51,7 @@ func (l *Logic) GetUserData(ctx *gin.Context, shortUrl string) error {
 
 func (l *Logic) FindLongUrl(ctx context.Context, shortID string) (string, error) {
 	logPrefix := "[FindLongUrl]"
-	shortURL := l.cfg.SiteURL + shortID
+	shortURL := l.cfg.AppConfig.ThisURL + shortID
 
 	longUrl, err := l.db.FindLongURL(ctx, shortURL)
 	if err != nil {
@@ -94,7 +78,7 @@ func (l *Logic) GetOrCreateShortURL(ctx context.Context, longURL string) (string
 			return "", fmt.Errorf("%s ошибка при создании уникального ShortID %w", logPrefix, err)
 		}
 
-		shortURL := l.cfg.SiteURL + id
+		shortURL := l.cfg.AppConfig.ThisURL + id
 
 		// Вызываем функцию для создания новой записи с заданными значениями полей longURL и shortURL
 		err = l.db.InsertRecord(ctx, longURL, shortURL)
