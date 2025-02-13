@@ -8,22 +8,30 @@ import (
 )
 
 func Read() *model.Config {
-	var cfg model.Config
+	var config model.Config
+	config.AppConfig = readAppConfig()
+	config.DBConfig = readDBConfig()
+	return &config
+}
 
-	cfg.DBCon = os.Getenv("DB_CONNECTION_STRING")
-	if cfg.DBCon == "" {
-		log.Fatalf("Не указан DB_CONN")
+func readDBConfig() model.DBConfig {
+	var config model.DBConfig
+	config.DBConnection = getEnv("DB_CONNECTION_STRING")
+	return config
+}
+
+func readAppConfig() model.AppConfig {
+	var config model.AppConfig
+	config.Host = getEnv("HOST")
+	config.ThisURL = getEnv("THIS_URL")
+	config.Debug = getEnv("DEBUG")
+	return config
+}
+
+func getEnv(key string) string {
+	var data string
+	if data = os.Getenv(key); data == "" {
+		log.Fatalf("не указан - %s", key)
 	}
-
-	cfg.Host = os.Getenv("HOST")
-	if cfg.Host == "" {
-		cfg.Host = "8080"
-	}
-
-	cfg.SiteURL = os.Getenv("SITE_URL")
-	if cfg.SiteURL == "" {
-		log.Fatalf("Не указан SITE_URL")
-	}
-
-	return &cfg
+	return data
 }

@@ -50,14 +50,12 @@ func setupRouter() *gin.Engine {
 func (a *App) setV1Routes() {
 	v1 := a.router.Group("/v1")
 	a.setURLShorterRoutes(v1.Group("/urlshort"))
-	a.setAuthRoutes(v1.Group("/auth"))
-
 }
 
 func (a *App) Start() {
 	a.setV1Routes()
 	server := &http.Server{
-		Addr:    ":" + a.config.Host,
+		Addr:    ":" + a.config.AppConfig.Host,
 		Handler: a.router,
 	}
 
@@ -65,7 +63,7 @@ func (a *App) Start() {
 	defer stop()
 
 	go func() {
-		log.Printf("Сервер запускается на порту - %s", a.config.Host)
+		log.Printf("Сервер запускается на порту - %s", a.config.AppConfig.Host)
 		if err := server.ListenAndServe(); err != nil {
 			log.Fatalf("Ошибка при запуске сервера - %s", err.Error())
 		}
