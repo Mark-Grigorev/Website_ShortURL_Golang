@@ -35,3 +35,9 @@ type URLReq struct {
 	ID  string `json:"id"`
 	URL string `json:"url"`
 }
+
+type InsertDataForURLs struct {
+	UserID   int64
+	LongURL  string
+	ShortURL string
+}

@@ -35,13 +35,13 @@ func New(dbConnection string, siteURL string) (DBClient, error) {
 	}, nil
 }
 
-func (c *DBClient) InsertRecord(ctx context.Context, longURL, shortURL string) error {
+func (c *DBClient) InsertRecord(ctx context.Context, data *model.InsertDataForURLs) error {
 	// Проверяем и обновляем префикс в длинной ссылке
-	longURL = utils.NormalizeLongURL(longURL)
+	longURL := utils.NormalizeLongURL(data.LongURL)
 
 	// Выполняем SQL-запрос с передачей параметров longURL и shortURL
 	var id int
-	err := c.db.QueryRowContext(ctx, insertShortURL, longURL, shortURL).Scan(&id)
+	err := c.db.QueryRowContext(ctx, insertShortURL, longURL, data.ShortURL, data.UserID).Scan(&id)
 	if err != nil {
 		return err
 	}

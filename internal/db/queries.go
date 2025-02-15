@@ -2,7 +2,7 @@ package db
 
 const (
 	// Запрос для вставки новой короткой ссылки.
-	insertShortURL = "INSERT INTO urls_users (longurl, shorturl) VALUES ($1, $2) RETURNING id"
+	insertShortURL = "INSERT INTO urls_users (longurl, shorturl, user_id) VALUES ($1, $2, $3) RETURNING id"
 	// Запрос для получения оригинального URL по короткому.
 	getLongURLByShort = "SELECT longurl FROM urls_users WHERE shorturl = $1"
 	// Запрос для получения ID записи по короткому URL.
