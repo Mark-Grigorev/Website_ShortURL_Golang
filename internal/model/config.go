@@ -1,8 +1,9 @@
 package model
 
 type Config struct {
-	DBConfig  DBConfig
-	AppConfig AppConfig
+	DBConfig   DBConfig
+	AppConfig  AppConfig
+	AuthConfig AuthConfig
 }
 
 type AppConfig struct {
@@ -12,4 +13,8 @@ type AppConfig struct {
 }
 type DBConfig struct {
 	DBConnection string
+}
+
+type AuthConfig struct {
+	Host string
 }

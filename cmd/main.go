@@ -16,5 +16,9 @@ func main() {
 		log.Fatalf("Ошибка при создании объекта бд - %s", err.Error())
 	}
 	logic := logic.New(cfg, &db)
-	controller.New(cfg, logic).Start()
+	authMw, err := controller.NewAuthMiddleware(cfg.AuthConfig.Host)
+	if err != nil {
+		log.Fatalf("Ошибка при создании мидлвари - %s", err.Error())
+	}
+	controller.New(cfg, logic, authMw).Start()
 }

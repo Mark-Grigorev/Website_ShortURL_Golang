@@ -18,17 +18,26 @@ func (a *App) CreateURLShort(ctx *gin.Context) {
 	var err error
 	var shortURL string
 
+	userID, ok := ctx.Get("user_id")
+	if !ok {
+		a.Error(ctx, http.StatusUnauthorized, "hasn't_user_id_in_ctx")
+		return
+	}
+	userIDInt, _ := userID.(int64)
+
 	var URLReq model.URLReq
 	if err = ctx.ShouldBindJSON(&URLReq); err != nil {
 		a.Error(ctx, http.StatusBadRequest, "некорректные данные")
+		return
 	}
 
 	if URLReq.URL == "" {
 		a.Error(ctx, http.StatusBadRequest, "не указана ссылка")
 		return
 	}
+
 	// Генерируем короткий URL из длинного URL
-	shortURL, err = a.logic.GetOrCreateShortURL(ctx.Request.Context(), URLReq.URL)
+	shortURL, err = a.logic.GetOrCreateShortURL(ctx.Request.Context(), URLReq.URL, userIDInt)
 	if err != nil {
 		a.Error(ctx, http.StatusInternalServerError, err.Error())
 		return

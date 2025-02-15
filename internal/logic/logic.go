@@ -60,7 +60,7 @@ func (l *Logic) FindLongUrl(ctx context.Context, shortID string) (string, error)
 	return longUrl, nil
 }
 
-func (l *Logic) GetOrCreateShortURL(ctx context.Context, longURL string) (string, error) {
+func (l *Logic) GetOrCreateShortURL(ctx context.Context, longURL string, userID int64) (string, error) {
 	logPrefix := "[GetOrCreateShortURL]"
 	var shortURL string
 
@@ -81,7 +81,13 @@ func (l *Logic) GetOrCreateShortURL(ctx context.Context, longURL string) (string
 		shortURL := l.cfg.AppConfig.ThisURL + id
 
 		// Вызываем функцию для создания новой записи с заданными значениями полей longURL и shortURL
-		err = l.db.InsertRecord(ctx, longURL, shortURL)
+		err = l.db.InsertRecord(
+			ctx,
+			&model.InsertDataForURLs{
+				LongURL:  longURL,
+				UserID:   userID,
+				ShortURL: shortURL,
+			})
 		if err != nil {
 			return "", fmt.Errorf("%s ошибка при записи в бд %w", logPrefix, err)
 		}

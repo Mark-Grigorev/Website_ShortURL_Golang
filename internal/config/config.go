@@ -11,6 +11,7 @@ func Read() *model.Config {
 	var config model.Config
 	config.AppConfig = readAppConfig()
 	config.DBConfig = readDBConfig()
+	config.AuthConfig = readAuthConfig()
 	return &config
 }
 
@@ -25,6 +26,12 @@ func readAppConfig() model.AppConfig {
 	config.Host = getEnv("HOST")
 	config.ThisURL = getEnv("THIS_URL")
 	config.Debug = getEnv("DEBUG")
+	return config
+}
+
+func readAuthConfig() model.AuthConfig {
+	var config model.AuthConfig
+	config.Host = getEnv("AUTH_HOST")
 	return config
 }
 

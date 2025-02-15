@@ -17,6 +17,7 @@ type App struct {
 	config *model.Config
 	router *gin.Engine
 	logic  *logic.Logic
+	authMd *AuthMiddleware
 }
 
 type ErrorResponse struct {
@@ -24,11 +25,12 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-func New(cfg *model.Config, logic *logic.Logic) *App {
+func New(cfg *model.Config, logic *logic.Logic, authMd *AuthMiddleware) *App {
 	return &App{
 		router: setupRouter(),
 		config: cfg,
 		logic:  logic,
+		authMd: authMd,
 	}
 
 }
@@ -48,7 +50,7 @@ func setupRouter() *gin.Engine {
 }
 
 func (a *App) setV1Routes() {
-	v1 := a.router.Group("/v1")
+	v1 := a.router.Group("/v1", a.authMd.ValidateUser())
 	a.setURLShorterRoutes(v1.Group("/urlshort"))
 }
 
